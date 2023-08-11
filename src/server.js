@@ -9,11 +9,6 @@ import { socketCallbacks } from './socket.js'
 // Load environment variables
 dotenv.config()
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGO_DB_CONNECTION_STRING)
-	.then(db => console.log(`Connected to MongoDB on port ${db.connections[0].port}`))
-	.catch(error => console.log(error))
-
 // Create Express application
 const app = express()
 
@@ -30,13 +25,20 @@ const io = new Server(httpServer, {
 	}
 })
 
-// Start listening for requests on HTTP server
-httpServer.listen(process.env.PORT || 5001, () => {
-	const host = httpServer.address().address
-	const port = httpServer.address().port
-	console.log('HTTP server listening at http://%s:%s', host, port)
-})
+// Connect to MongoDB - ensure Mongo is connected before listening on HTTP server
+mongoose.connect(process.env.MONGO_DB_CONNECTION_STRING)
+	.then(db => {
+		console.log(`Connected to MongoDB on port ${db.connections[0].port}`)
 
-// Specify callbacks for Express and SocketIO
-expressCallbacks(app)
-socketCallbacks(io)
+		// Start listening for requests on HTTP server
+		httpServer.listen(process.env.PORT || 5001, () => {
+			const host = httpServer.address().address
+			const port = httpServer.address().port
+			console.log('HTTP server listening at http://%s:%s', host, port)
+		})
+
+		// Specify callbacks for Express and SocketIO
+		expressCallbacks(app)
+		socketCallbacks(io)
+	})
+	.catch(error => console.log(error))
