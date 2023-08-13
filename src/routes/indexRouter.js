@@ -41,7 +41,6 @@ import {
 } from '../controllers/commentController.js'
 
 const router = express.Router()
-
 router.get('/', (req, res) => {
 	res.json({ message: 'Welcome to the Blog API version 1' })
 })

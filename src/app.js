@@ -14,6 +14,7 @@ export default function expressCallbacks (app) {
 	app.use(cors({
 		credentials: true,
 		origin: [
+			'http://localhost:4173',
 			'http://localhost:5173',
 			'https://jundran.github.io'
 		]
@@ -22,6 +23,7 @@ export default function expressCallbacks (app) {
 	app.use(express.json())
 
 	// ROUTES
+	app.get('/health-check', (req, res) => res.sendStatus(200))
 	app.use('/api/v1', indexRouter)
 
 	// CATCH 404
