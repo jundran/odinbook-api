@@ -72,7 +72,7 @@ export default [
 		dob: '1994-10-04',
 		password: await bcrypt.hash('password', 10),
 		location: 'Halifax, Nova Scotia',
-		jobTitle: 'Piot',
+		jobTitle: 'Pilot',
 		company: 'Nova Airlines',
 		school: 'Halifax Flying School',
 		hobbies: 'Hiking, reading',

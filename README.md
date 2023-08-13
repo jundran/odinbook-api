@@ -1,7 +1,7 @@
 # odinbook-api
 
 ## Live
-https://odinbook-api.onrender.com/api/v1
+https://odinbook-api-production-d14c.up.railway.app/api/v1
 
 ## Description
 TOP - Odinbook project - API
