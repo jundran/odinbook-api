@@ -51,19 +51,19 @@ router.get('/', (req, res) => {
 // }
 
 // Authentication
-router.post('/auth/', createAccount)
+router.post('/auth', createAccount)
 router.post('/auth/demo/:id', loginDemoAccount)
 router.post('/auth/login', login)
 router.post('/auth/deleteAccount', validateUser, deleteAccount)
 router.put('/auth/updatePassword', validateUser, updatePassword)
 
 // User
-router.get('/user/', validateUser, getAllUsers)
+router.get('/user', validateUser, getAllUsers)
 router.get('/user/current', validateUser, getCurrentUser)
 router.get('/user/:id', validateUser, getUser)
 router.patch('/user/current', validateUser, updateCurrentUser)
 router.patch('/user/clearNotification', validateUser, clearNotification)
-router.post('/user/', createAccount)
+router.post('/user', createAccount)
 router.post('/user/portrait', validateUser, upload.single('file'), uploadPortrait)
 router.delete('/user/portrait', validateUser, deletePortrait)
 
