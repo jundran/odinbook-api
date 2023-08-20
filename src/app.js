@@ -28,14 +28,15 @@ export default function expressCallbacks (app) {
 
 	// CATCH 404
 	app.use((req, res, next) => {
-		next(new AppError(501, 'API route does not exist'))
+		if (req.path.startsWith('/api')) next(new AppError(501, 'API route does not exist'))
+		else next(new AppError(404, 'Resource not found'))
 	})
 
 	// ERROR HANDLER
 	app.use(async (err, req, res, next) => {
 		// Internally created error
 		if (err instanceof AppError) {
-			console.error('APP ERROR', err)
+			// console.error('APP ERROR', err)
 			res.status(err.status)
 			res.json(err)
 		}
