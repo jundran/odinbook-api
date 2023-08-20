@@ -2,6 +2,7 @@ import { unlink } from 'fs'
 import asyncHandler from '../asyncHandler.js'
 import AppError from '../error.js'
 import User from '../models/userModel.js'
+import { getUserSocketId } from '../socket.js'
 
 export async function queryUserAndPopulate (query, password) {
 	const populatedQuery = query
@@ -15,7 +16,16 @@ export async function queryUserAndPopulate (query, password) {
 				select: 'firstname surname'
 			}
 		})
-	return password ? populatedQuery : populatedQuery.select({ password: 0 })
+
+	const selectedQuery = password ? await populatedQuery : await populatedQuery.select({ password: 0 })
+	const user = selectedQuery.toObject()
+	const friendsWithStatus = user.friends.map(friend => {
+		return {
+			...friend,
+			isOnline: getUserSocketId(friend.id) ? true : false
+		}
+	})
+	return { ...user, friends: friendsWithStatus }
 }
 
 export const getAllUsers = asyncHandler(async (req, res, next) => {
