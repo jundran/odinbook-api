@@ -39,6 +39,10 @@ import {
 	unlikeComment,
 	deleteComment
 } from '../controllers/commentController.js'
+import {
+	getUserMessages,
+	postMessage
+} from '../controllers/messageController.js'
 
 const router = express.Router()
 router.get('/', (req, res) => {
@@ -89,5 +93,9 @@ router.post('/comment', validateUser, postComment)
 router.patch('/comment/like', validateUser, likeComment)
 router.patch('/comment/unlike', validateUser, unlikeComment)
 router.delete('/comment/:id', validateUser, deleteComment)
+
+// Messages
+router.get('/message/', validateUser, getUserMessages)
+router.post('/message', validateUser, postMessage)
 
 export default router

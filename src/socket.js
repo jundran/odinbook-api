@@ -97,3 +97,8 @@ export function notifyUser (updatedUserDocument) {
 		if (hadListener) console.log(`Sent update to ${updatedUserDocument.fullname} `)
 	}
 }
+
+export function sendChatMessage (messageDocument) {
+	const socketId = getUserSocketId(messageDocument.recipient.toString())
+	io.to(socketId).emit('chatMessage', messageDocument)
+}
