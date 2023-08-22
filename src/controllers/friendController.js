@@ -1,5 +1,6 @@
 import asyncHandler from '../asyncHandler.js'
 import User from '../models/userModel.js'
+import Message from '../models/messageModel.js'
 import { queryUserAndPopulate } from './userController.js'
 import { notifyUser } from '../socket.js'
 
@@ -24,6 +25,22 @@ export const removeFriend = asyncHandler(async (req, res, next) => {
 		},
 		{ new: true }
 	))
+
+	// Delete messages between user and removed friend
+	// In future they could be marked as inactive to keep them without returning them in queries
+	await Message.deleteMany({
+		$or: [{
+			$and: [
+				{sender: req.user.id},
+				{recipient: req.body.id}
+			]
+		}, {
+			$and: [
+				{sender: req.body.id},
+				{recipient: req.user.id}
+			]
+		}]
+	})
 
 	notifyUser(removedFriend)
 	res.json({ document: user })

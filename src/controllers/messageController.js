@@ -19,3 +19,12 @@ export const postMessage = asyncHandler(async (req, res, next) => {
 
 	sendChatMessage(message)
 })
+
+export const markAsRead = asyncHandler(async (req, res, next) => {
+	await Message.updateMany({
+		'_id': { $in: req.body.ids }
+	}, {
+		isRead: true
+	})
+	res.sendStatus(204)
+})

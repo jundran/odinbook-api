@@ -8,6 +8,9 @@ function getClientIndex (userId) {
 	return connectedClients.findIndex(client => client.userId === userId)
 }
 
+// TODO - opening another tab or browser with same login replaces the web socket
+// Need to add an array of sockets, one for each client and remove when they disconnect
+// Then need to send messages to each of the sockets
 export function socketCallbacks (server) {
 	io = server
 	io.on('connection', socket => { // Called when any client connects

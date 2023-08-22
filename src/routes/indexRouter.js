@@ -41,7 +41,8 @@ import {
 } from '../controllers/commentController.js'
 import {
 	getUserMessages,
-	postMessage
+	postMessage,
+	markAsRead
 } from '../controllers/messageController.js'
 
 const router = express.Router()
@@ -97,5 +98,6 @@ router.delete('/comment/:id', validateUser, deleteComment)
 // Messages
 router.get('/message/', validateUser, getUserMessages)
 router.post('/message', validateUser, postMessage)
+router.patch('/message/read', validateUser, markAsRead)
 
 export default router
