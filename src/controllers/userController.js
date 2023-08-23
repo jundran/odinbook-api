@@ -2,7 +2,7 @@ import { unlink } from 'fs'
 import asyncHandler from '../asyncHandler.js'
 import AppError from '../error.js'
 import User from '../models/userModel.js'
-import { getUserSocketId } from '../socket.js'
+import { getUserSocketIds } from '../socket.js'
 
 export async function queryUserAndPopulate (query, password) {
 	const populatedQuery = query
@@ -22,7 +22,7 @@ export async function queryUserAndPopulate (query, password) {
 	const friendsWithStatus = user.friends.map(friend => {
 		return {
 			...friend,
-			isOnline: getUserSocketId(friend.id) ? true : false
+			isOnline: getUserSocketIds(friend.id).length ? true : false
 		}
 	})
 	return { ...user, friends: friendsWithStatus }
