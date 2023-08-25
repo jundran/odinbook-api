@@ -18,6 +18,7 @@ export async function queryUserAndPopulate (query, password) {
 		})
 
 	const selectedQuery = password ? await populatedQuery : await populatedQuery.select({ password: 0 })
+	if (!selectedQuery) return null
 	const user = selectedQuery.toObject()
 	const friendsWithStatus = user.friends.map(friend => {
 		return {

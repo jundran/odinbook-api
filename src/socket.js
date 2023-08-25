@@ -79,6 +79,7 @@ function notifyFriendsOfUserStatusChange (arrayIndex, isOnline) {
 
 async function sendUpdate (userId, isOnline) {
 	const user = await User.findById(userId).select('friends')
+	if (!user) return
 	for (const friend of user.friends) {
 		const onlineFriendSocketIds = getUserSocketIds(friend._id.toString())
 		sendMessageToAllSockets(onlineFriendSocketIds, 'friendStatusUpdate', { id: userId, isOnline })
