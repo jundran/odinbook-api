@@ -17,7 +17,7 @@ export const postMessage = asyncHandler(async (req, res, next) => {
 	res.status(201)
 	res.json({ document: message })
 
-	sendChatMessage(message)
+	sendChatMessage(message, req.user.id)
 })
 
 export const markAsRead = asyncHandler(async (req, res, next) => {

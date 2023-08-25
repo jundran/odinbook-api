@@ -96,9 +96,13 @@ export function notifyUser (updatedUserDocument) {
 	sendMessageToAllSockets(socketIds, 'userUpdate', updatedUserDocument)
 }
 
-export function sendChatMessage (messageDocument) {
+export function sendChatMessage (messageDocument, userId) {
 	const socketIds = getUserSocketIds(messageDocument.recipient.toString())
 	sendMessageToAllSockets(socketIds, 'chatMessage', messageDocument)
+
+	// SendChatMessage to other clients that the user may have to keep chat in sync
+	const otherSockets = getUserSocketIds(userId)
+	sendMessageToAllSockets(otherSockets, 'chatMessage', messageDocument)
 }
 
 function sendMessageToAllSockets (socketIds, channel, message) {
