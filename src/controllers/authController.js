@@ -55,7 +55,7 @@ export const updatePassword = asyncHandler(async (req, res, next) => {
 })
 
 export const deleteAccount = asyncHandler(async (req, res, next) => {
-	const user = await User.findById(req.user.id).select('password')
+	const user = await User.findById(req.user.id).select('password isDemoAccount')
 	if (!user) return next(new AppError(404, 'Account not found'))
 
 	const match = await bcrypt.compare(req.body.password, user.password)
