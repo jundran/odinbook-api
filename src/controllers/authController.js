@@ -38,7 +38,7 @@ export const login = asyncHandler(async (req, res, next) => {
 
 export const loginDemoAccount = asyncHandler(async (req, res, next) => {
 	const user = await queryUserAndPopulate(User.findOne({ demoAccountId: req.params.id }))
-	if (!user) next(new AppError(404, 'User not found'))
+	if (!user) return next(new AppError(404, 'User not found'))
 	const token = createToken(user._id)
 	res.json({ document: user, token })
 })
@@ -66,7 +66,7 @@ export const deleteAccount = asyncHandler(async (req, res, next) => {
 })
 
 function createToken (userId) {
-	// payload could be an object literal, buffer or string representing valid JSON
+	// Payload could be an object literal, buffer or string representing valid JSON
 	return jwt.sign(
 		{ user: { id : userId.toString() } },
 		process.env.ACCESS_TOKEN_SECRET,

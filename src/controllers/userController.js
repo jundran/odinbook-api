@@ -65,7 +65,7 @@ export const getUser = asyncHandler(async (req, res, next) => {
 
 export const updateCurrentUser = asyncHandler(async (req, res, next) => {
 	const updatedUser = await User.findByIdAndUpdate(req.user.id, req.body, { new: true })
-	if (!updatedUser) next(new AppError(404, 'User not found'))
+	if (!updatedUser) return next(new AppError(404, 'User not found'))
 	res.json({ document: updatedUser })
 })
 
