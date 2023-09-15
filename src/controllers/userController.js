@@ -36,19 +36,21 @@ export const getAllUsers = asyncHandler(async (req, res, next) => {
 
 export const getCurrentUser = asyncHandler(async (req, res, next) => {
 	const user = await queryUserAndPopulate(User.findById(req.user.id))
-	if (!user) throw new AppError(404, 'User not found')
+	if (!user) return next(new AppError(404, 'User not found'))
 	res.json({ document: user })
 })
 
 export const getUser = asyncHandler(async (req, res, next) => {
 	// Get document of logged in user
 	const loggedInUser = await User.findById(req.user.id).select({ friends: 1 })
-	if (!loggedInUser) throw new AppError(404, 'Current user not found')
+	if (!loggedInUser) return next(new AppError(404, 'Current user not found'))
 
 	// Get document of user sent in req.params
 	let user = await User.findById(req.params.id)
-		// Remove private fields and populate basic friend data
-		.select({ password: 0, incomingFriendRequests: 0, outgoingFriendRequests: 0 })
+		// Remove private and unneeded fields and populate basic friend data
+		.select({ password: 0, incomingFriendRequests: 0, outgoingFriendRequests: 0,
+			notifications: 0, isActive: 0, isDemoAccount: 0, demoAccountId: 0
+		})
 		.populate({ path: 'friends', select: 'firstname surname profilePicture' })
 
 	// Determine if logged user is friend of user
